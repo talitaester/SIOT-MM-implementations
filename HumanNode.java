@@ -26,6 +26,11 @@ import sinalgo.tools.statistics.UniformDistribution;
 public class HumanNode extends Node {
 	
 	Vector<ObjectNode> my_objects = null;
+	NodeHouse home = null;
+	
+	public HumanNode() {
+		this.home = new NodeHouse(this.ID, this);
+	}
 	
 
 	public void createObject() {
@@ -152,15 +157,17 @@ public class HumanNode extends Node {
 //				System.out.print("I will take with me the: ");
 //				System.out.println(obj);
 //				System.out.println(obj.mob_prob.getP());
-				
-				
+
 				obj.setMobilityModel(new FollowOwner(this.ID, this));
-			}else {
+				this.home.takeObject(obj);
+            }
+			else {
 				
 //				System.out.print("If I wont take with me, it should stay at home: ");
 //				System.out.println(obj);
 //				System.out.println(obj.mob_prob.getP());
 				obj.setMobilityModel(new NoMobility());
+				home.leftObject(obj);
 			}
 		}
 	}
@@ -317,13 +324,14 @@ public class HumanNode extends Node {
 		}
 	}
 	
-	@NodePopupMethod(menuText="Create OBJ")
+	@NodePopupMethod(menuText="Create OBJ and set a home" )
 	public void myPopupMethod4() {
 		
 		createObject();
 		
 	}
 	
+
 	@NodePopupMethod(menuText="Print objects")
 	public void myPopupMethod5() {
 		
