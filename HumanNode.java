@@ -28,12 +28,14 @@ public class HumanNode extends Node {
 	Vector<ObjectNode> my_objects = null;
 	NodeHouse home = null;
 	
-	public HumanNode() {
+	public void setHome() {
+		System.out.println("Building a House");
 		this.home = new NodeHouse(this.ID, this);
+		Tools.getRuntime().addNode(this.home);
 	}
 	
 
-	public void createObject() {
+	public void createObject(){
 		ObjectNode tmp_obj;
 		
 		// baseado-se nas prob. crie objetos
@@ -324,13 +326,17 @@ public class HumanNode extends Node {
 		}
 	}
 	
-	@NodePopupMethod(menuText="Create OBJ and set a home" )
+	@NodePopupMethod(menuText="Create OBJ" )
 	public void myPopupMethod4() {
 		
 		createObject();
 		
 	}
-	
+	@NodePopupMethod(menuText="set a home" )
+	public void myPopupMethod6() {
+		setHome();
+		
+	}	
 
 	@NodePopupMethod(menuText="Print objects")
 	public void myPopupMethod5() {

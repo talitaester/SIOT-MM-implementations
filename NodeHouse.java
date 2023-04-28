@@ -19,18 +19,21 @@ public class NodeHouse extends Node{
 	  Vector<ObjectNode> objects_at_home = null;
 	  int owner_id = -1;
 	  HumanNode owner = null;
+	  Position home_position = null;
 	  
 
 	  public NodeHouse(int owner_id, HumanNode owner){
 	    super();
 	    this.owner = owner;
-	    Position home_position = owner.getPosition();
-	    this.setPosition(home_position); // the position a human node is when the simulation starts is considered their house
+	    this.home_position.assign(owner.getPosition()); // it`s not supposed to change bc houses usually don`t move!
 	    this.setMobilityModel(new NoMobility());
 		this.objects_at_home = new Vector<ObjectNode>();
+		this.setConnectivityModel(owner.getConnectivityModel());
+		this.setInterferenceModel(owner.getInterferenceModel());
+		this.setReliabilityModel(owner.getReliabilityModel());
 	    
 	  }
-	  
+
 	   public void takeObject(ObjectNode obj) {
 		 if(objects_at_home.contains(obj)) {
 				objects_at_home.remove(obj);
