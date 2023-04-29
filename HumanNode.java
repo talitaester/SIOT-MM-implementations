@@ -18,6 +18,7 @@ import sinalgo.models.MobilityModel;
 import sinalgo.models.Model;
 import sinalgo.models.ReliabilityModel;
 import sinalgo.nodes.Node;
+import projects.aSIOTmm.nodes.nodeImplementations.NodeHouse;
 import sinalgo.nodes.Position;
 import sinalgo.nodes.messages.Inbox;
 import sinalgo.tools.Tools;
@@ -31,7 +32,8 @@ public class HumanNode extends Node {
 	public void setHome() {
 		System.out.println("Building a House");
 		this.home = new NodeHouse(this.ID, this);
-		Tools.getRuntime().addNode(this.home);
+		Tools.getRuntime().addNode(home);
+		
 	}
 	
 
@@ -58,6 +60,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
+			this.home.leftObject(tmp_obj);
 			
 		}
 		
@@ -76,6 +79,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
+			this.home.leftObject(tmp_obj);
 			
 		}
 		//smartwatch
@@ -93,6 +97,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
+			this.home.leftObject(tmp_obj);
 			
 		}
 		
@@ -111,6 +116,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
+			this.home.leftObject(tmp_obj);
 			
 		}
 		
@@ -128,7 +134,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
-			
+			this.home.leftObject(tmp_obj);
 		}
 
 		// games console 
@@ -145,6 +151,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
+			this.home.leftObject(tmp_obj);
 			
 		}
 		
@@ -169,7 +176,6 @@ public class HumanNode extends Node {
 //				System.out.println(obj);
 //				System.out.println(obj.mob_prob.getP());
 				obj.setMobilityModel(new NoMobility());
-				home.leftObject(obj);
 			}
 		}
 	}
@@ -330,11 +336,6 @@ public class HumanNode extends Node {
 	public void myPopupMethod4() {
 		
 		createObject();
-		
-	}
-	@NodePopupMethod(menuText="set a home" )
-	public void myPopupMethod6() {
-		setHome();
 		
 	}	
 
