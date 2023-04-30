@@ -13,18 +13,13 @@ import sinalgo.tools.Tools;
 public class CTedges extends BidirectionalEdge {
 	private double start_time, end_time;
 	
-	
 	@Override
 	public void initializeEdge() {
 		super.initializeEdge();
 		
-		if(this.startNode instanceof ObjectNode || this.endNode instanceof ObjectNode) {
-			
-		} else {
-		start_time = Tools.getGlobalTime();
-		System.out.println("SNode=" + this.startNode.ID  + 
-				" ENode=" + this.endNode.ID +
-				" Stime= " + start_time);
+		if(startNode.getClass() == endNode.getClass()){
+			start_time = Tools.getGlobalTime();
+			System.out.println("SNode=" + this.startNode.ID  + " ENode=" + this.endNode.ID + " Stime= " + start_time);
 		}
 	}
 
