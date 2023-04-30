@@ -27,14 +27,14 @@ import sinalgo.tools.statistics.UniformDistribution;
 public class HumanNode extends Node {
 	
 	Vector<ObjectNode> my_objects = null;
-	NodeHouse home = null;
+	//NodeHouse home = null;
 	
-	public void setHome() {
-		System.out.println("Building a House");
-		this.home = new NodeHouse(this.ID, this);
-		Tools.getRuntime().addNode(home);
+	//public void setHome() {
+		//System.out.println("Building a House");
+		//this.home = new NodeHouse(this.ID, this);
+		//Tools.getRuntime().addNode(this.home);
 		
-	}
+	//}
 	
 
 	public void createObject(){
@@ -60,7 +60,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
-			this.home.leftObject(tmp_obj);
+			//this.home.leftObject(tmp_obj);
 			
 		}
 		
@@ -79,7 +79,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
-			this.home.leftObject(tmp_obj);
+			//.home.leftObject(tmp_obj);
 			
 		}
 		//smartwatch
@@ -97,7 +97,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
-			this.home.leftObject(tmp_obj);
+			//this.home.leftObject(tmp_obj);
 			
 		}
 		
@@ -116,7 +116,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
-			this.home.leftObject(tmp_obj);
+			//this.home.leftObject(tmp_obj);
 			
 		}
 		
@@ -134,7 +134,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
-			this.home.leftObject(tmp_obj);
+			//this.home.leftObject(tmp_obj);
 		}
 
 		// games console 
@@ -151,7 +151,7 @@ public class HumanNode extends Node {
 			
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
-			this.home.leftObject(tmp_obj);
+			//this.home.leftObject(tmp_obj);
 			
 		}
 		
@@ -168,7 +168,7 @@ public class HumanNode extends Node {
 //				System.out.println(obj.mob_prob.getP());
 
 				obj.setMobilityModel(new FollowOwner(this.ID, this));
-				this.home.takeObject(obj);
+				//this.home.takeObject(obj);
             }
 			else {
 				
