@@ -35,3 +35,4 @@ public class CTedges extends BidirectionalEdge {
 	}
  
 }
+//whats wrong? why it isnt working how its supposed to be 
