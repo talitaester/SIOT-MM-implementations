@@ -1,6 +1,5 @@
 package projects.aSIOTmm.nodes.edges;
 
-import projects.aSIOTmm.nodes.nodeImplementations.ObjectNode;
 import sinalgo.nodes.edges.BidirectionalEdge;
 import sinalgo.tools.Tools;
 
@@ -13,14 +12,18 @@ import sinalgo.tools.Tools;
 public class CTedges extends BidirectionalEdge {
 	private double start_time, end_time;
 	
+	
 	@Override
 	public void initializeEdge() {
 		super.initializeEdge();
 		
-		if(startNode.getClass() == endNode.getClass()){
-			start_time = Tools.getGlobalTime();
-			System.out.println("SNode=" + this.startNode.ID  + " ENode=" + this.endNode.ID + " Stime= " + start_time);
-		}
+		start_time = Tools.getGlobalTime();
+		System.out.println("SNode=" + this.startNode.ID  + 
+				" ENode=" + this.endNode.ID +
+				" Stime= " + start_time);
+		//append the output in a dataframe
+		startCsvPrinter.printRecord(this.startNode.ID, this.endNode.ID, start_time);
+	
 	}
 
 	@Override
@@ -32,7 +35,11 @@ public class CTedges extends BidirectionalEdge {
 				" ENode=" + this.endNode.ID +
 				" Stime= " + start_time +
 				" Etime= " + end_time);
+		//append the output in a dataframe
+		endCsvPrinter.printRecord(this.startNode.ID, this.endNode.ID, end_time);
+		
 	}
+	
+	
  
 }
-//whats wrong? why it isnt working how its supposed to be 

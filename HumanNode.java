@@ -3,6 +3,7 @@ package projects.aSIOTmm.nodes.nodeImplementations;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.*;
+import org.apache.commons.csv.CSVPrinter;
 
 import projects.aSIOTmm.CustomGlobal;
 import projects.aSIOTmm.models.mobilityModels.FollowOwner;
@@ -27,6 +28,8 @@ import sinalgo.tools.statistics.UniformDistribution;
 public class HumanNode extends Node {
 	
 	Vector<ObjectNode> my_objects = null;
+
+
 	//NodeHouse home = null;
 	
 	//public void setHome() {
@@ -34,12 +37,24 @@ public class HumanNode extends Node {
 		//this.home = new NodeHouse(this.ID, this);
 		//Tools.getRuntime().addNode(this.home);
 		
-	//}
+		//}
 	
 
 	public void createObject(){
 		ObjectNode tmp_obj;
-		
+
+		// keep the ids n start time 
+		CSVFormat startCsvFormat = CSVFormat.DEFAULT.withHeader("SNode", "ENode", "Stime");
+		String startFilePath = "Node-" + this.ID + "-Startcontacts.csv";
+		File startContactsFile = new File(startFilePath);
+		FileWriter startFileWriter = new FileWriter(startContactsFile);
+		CSVPrinter startCsvPrinter = new CSVPrinter(startFileWriter, startCsvFormat);
+				// keep the ids n end time
+		CSVFormat endCsvFormat = CSVFormat.DEFAULT.withHeader("SNode", "ENode", "Etime");
+		String endFilePath = "Node-" + this.ID + "-Endcontacts.csv";
+		File endContactsFile = new File(endFilePath);
+		FileWriter endFileWriter = new FileWriter(endContactsFile);
+		CSVPrinter endCsvPrinter = new CSVPrinter(endFileWriter, endCsvFormat);
 		// baseado-se nas prob. crie objetos
 		 // sm-tv 38, sm-phone 94
 		
