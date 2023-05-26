@@ -37,65 +37,117 @@ public class HumanNode extends Node {
 
 	public void createObject() {
 		ObjectNode tmp_obj;
-		
+
 		// baseado-se nas prob. crie objetos
 		 // sm-tv 38, sm-phone 94
-		
+
 		this.my_objects = new Vector<ObjectNode>();
-		
+
 		//smartphone
 		if(UniformDistribution.nextUniform(0, 1) <= 0.94) {
 			System.out.println("Creating smartphone");
 
 			tmp_obj = new ObjectNode(ObjType.SP, this, this.ID, new FollowOwner(this.ID, this), ObjMobilityProb.HIGH);
-			
+
 			tmp_obj.setPosition(this.getPosition());
-			
+
 			tmp_obj.setConnectivityModel(this.getConnectivityModel());
 			tmp_obj.setInterferenceModel(this.getInterferenceModel());
 			tmp_obj.setReliabilityModel(this.getReliabilityModel());
-			
-			
+
+
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
-			
+
 		}
-		
-//		//laptop
+
+		//tablet
 		if(UniformDistribution.nextUniform(0, 1) <= 0.94) {
+			System.out.println("Creating tablet");
+
+			tmp_obj = new ObjectNode(ObjType.TAB, this, this.ID, new FollowOwner(this.ID, this), ObjMobilityProb.MEDIUM);
+
+			tmp_obj.setPosition(this.getPosition());
+
+			tmp_obj.setConnectivityModel(this.getConnectivityModel());
+			tmp_obj.setInterferenceModel(this.getInterferenceModel());
+			tmp_obj.setReliabilityModel(this.getReliabilityModel());
+
+
+			Tools.getRuntime().addNode(tmp_obj);
+			this.my_objects.add(tmp_obj);
+
+		}
+		//smartwatch
+		if(UniformDistribution.nextUniform(0, 1) <= 0.13) {
+			System.out.println("Creating smartwatch");
+
+			tmp_obj = new ObjectNode(ObjType.SW, this, this.ID, new FollowOwner(this.ID, this), ObjMobilityProb.HIGH);
+
+			tmp_obj.setPosition(this.getPosition());
+
+			tmp_obj.setConnectivityModel(this.getConnectivityModel());
+			tmp_obj.setInterferenceModel(this.getInterferenceModel());
+			tmp_obj.setReliabilityModel(this.getReliabilityModel());
+
+
+			Tools.getRuntime().addNode(tmp_obj);
+			this.my_objects.add(tmp_obj);
+
+		}
+
+		//laptop
+		if(UniformDistribution.nextUniform(0, 1) <= 0.69) {
 			System.out.println("Creating laptop");
 
 			tmp_obj = new ObjectNode(ObjType.LT, this, this.ID, new FollowOwner(this.ID, this), ObjMobilityProb.MEDIUM);
-			
+
 			tmp_obj.setPosition(this.getPosition());
-			
+
 			tmp_obj.setConnectivityModel(this.getConnectivityModel());
 			tmp_obj.setInterferenceModel(this.getInterferenceModel());
 			tmp_obj.setReliabilityModel(this.getReliabilityModel());
-			
-			
+
+
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
-			
+
 		}
-//		
+
 		//smartTV
-		if(UniformDistribution.nextUniform(0, 1) <= 0.98) {
+		if(UniformDistribution.nextUniform(0, 1) <= 0.38) {
 			System.out.println("Creating TV");
-		
-			tmp_obj = new ObjectNode(ObjType.TV, this, this.ID, new NoMobilitySIOTMM(), ObjMobilityProb.LOW);
-			
+
+			tmp_obj = new ObjectNode(ObjType.TV, this, this.ID, new NoMobility(), ObjMobilityProb.LOW);
+
 			tmp_obj.setPosition(this.getPosition());
-			
+
 			tmp_obj.setConnectivityModel(this.getConnectivityModel());
 			tmp_obj.setInterferenceModel(this.getInterferenceModel());
 			tmp_obj.setReliabilityModel(this.getReliabilityModel());
-			
+
 			Tools.getRuntime().addNode(tmp_obj);
 			this.my_objects.add(tmp_obj);
-			
+
 		}
-		
+
+		// games console 
+		if(UniformDistribution.nextUniform(0, 1) <= 0.21) {
+			System.out.println("Creating game console");
+
+			tmp_obj = new ObjectNode(ObjType.CON, this, this.ID, new NoMobility(), ObjMobilityProb.LOW);
+
+			tmp_obj.setPosition(this.getPosition());
+
+			tmp_obj.setConnectivityModel(this.getConnectivityModel());
+			tmp_obj.setInterferenceModel(this.getInterferenceModel());
+			tmp_obj.setReliabilityModel(this.getReliabilityModel());
+
+			Tools.getRuntime().addNode(tmp_obj);
+			this.my_objects.add(tmp_obj);
+
+		}
+
 	}
 	
 	public void pickWhatIWillTakeWithMe() {
