@@ -33,14 +33,14 @@ public class SWIM extends MobilityModel {
 	private Position home_position = new Position();
 	private int home_cell_id;
 	
-	private int neighbour_location_limit = 3; // radius mesured in cells
+	private int neighbour_location_limit = 10; // radius mesured in cells
 	
 	private double popularity_decision_threshold = 0.7; // 
 	
-	private double alpha = 0.5;
-	private double return_home_probability = 0.35; // probability to return home
+	private double alpha = 0.8;
+	private double return_home_probability = 0.50; // probability to return home
 	
-	private static int side_num_cells = 100;
+	private static int side_num_cells = 100;                                                  
 	
 	private static Grid grid_map = new Grid(Configuration.dimX, Configuration.dimY, side_num_cells);
 	
@@ -59,8 +59,8 @@ public class SWIM extends MobilityModel {
 	public Vector<NodeProp> node_visiting_cells_properties = null;
 
 	private boolean locations_created = false;
-	private int num_of_locs= 20;
-	public Vector<Loc> locations = null;
+	private int num_of_locs= 20; 
+	public Vector<Loc> locations = null; // class that represents a cell
 	
 	
 	
@@ -313,7 +313,7 @@ public class SWIM extends MobilityModel {
 
 		if (randomNum < return_home_probability && !this.last_target.equals(home_position)) {
 
-			System.out.println("Returning home");
+	//		System.out.println("Returning home");
 
 			//this.last_target.assign(current_position);
 			
@@ -415,7 +415,8 @@ public class SWIM extends MobilityModel {
 //			System.out.println("randomNum ="+randomNum);
 //			System.out.println("pick idx ="+(randomNum));
 			
-			target = grid_map.randomPosInCell(vec.get(randomNum).cell_map_id);
+			target = grid_map.getCellCenterPositionByID(vec.get(randomNum).cell_map_id); 
+																		
 			
 			vec.get(randomNum).increaseLocationPicks();
 
@@ -426,7 +427,7 @@ public class SWIM extends MobilityModel {
 //			System.out.println("Picking randomNum NOT popular idx between = ["+0+","+notPopular+"-1]");
 //			System.out.println("randomNum ="+randomNum);
 //			System.out.println("pick idx ="+(popular + randomNum));
-			target = grid_map.randomPosInCell(vec.get(popular + randomNum).cell_map_id);
+			target = grid_map.getCellCenterPositionByID(vec.get(popular + randomNum).cell_map_id);
 			
 			vec.get(popular + randomNum).increaseLocationPicks();
 			
