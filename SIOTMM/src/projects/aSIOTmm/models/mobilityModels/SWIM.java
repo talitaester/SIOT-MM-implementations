@@ -152,7 +152,7 @@ public class SWIM extends MobilityModel {
 		for(int i = 0; i < num_of_locs - 1; i++) {
 			random_cell_id = (int) UniformDistribution.nextUniform(0, Math.pow(side_num_cells, 2));
 			
-			p = grid_map.randomPosInCell(random_cell_id);
+			p = grid_map.getCellCenterPositionByID(random_cell_id);
 			
 			if(random_cell_id == home_cell_id) {
 				continue;
@@ -171,9 +171,6 @@ public class SWIM extends MobilityModel {
 			
 		}
 		
-//		for(Loc i : locations) {
-//			System.out.println(i);
-//		}
 		
 	}
 
