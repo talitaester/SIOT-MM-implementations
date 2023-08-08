@@ -33,34 +33,24 @@ public class SWIM extends MobilityModel {
 	private Position home_position = new Position();
 	private int home_cell_id;
 	
-	private int neighbour_location_limit = 10; // radius mesured in cells
+	private int neighbour_location_limit = 3; // radius mesured in cells
 	
 	private double popularity_decision_threshold = 0.7; // 
 	
-	private double alpha = 0.8;
-	private double return_home_probability = 0.50; // probability to return home
+	private double alpha = 0.5;
+	private double return_home_probability = 0.35; // probability to return home
 	
-	private static int side_num_cells = 100;                                                  
+	private static int side_num_cells = 100;
 	
 	private static Grid grid_map = new Grid(Configuration.dimX, Configuration.dimY, side_num_cells);
 	
-	//private List<Integer> neighborhood_cells_index = new ArrayList<Integer>();
 	
-	//private List<Integer> visiting_cells_index = new ArrayList<Integer>();
-	
-	//private Hashtable<Integer, Double> weight_cells = new Hashtable<Integer, Double>(); // cell_id and weight
-	//private Vector<Double> weight_cells = null;
-	
-	// seen_cells is the number of nodes that node A encountered at cell C, and this value updates each time node A visits cell C.
-	//private Hashtable<Integer, Integer> seen_cells = new Hashtable<Integer, Integer>();
-	//private Vector<Integer> seen_cells = null;
-	//private Vector<NodeProp> node_cells_properties = null;
 	public Vector<NodeProp> node_neighbourding_cells_properties = null;
 	public Vector<NodeProp> node_visiting_cells_properties = null;
 
 	private boolean locations_created = false;
-	private int num_of_locs= 20; 
-	public Vector<Loc> locations = null; // class that represents a cell
+	private int num_of_locs= 20;
+	public Vector<Loc> locations = null;
 	
 	
 	
@@ -87,8 +77,6 @@ public class SWIM extends MobilityModel {
 
 	private void finish()	{
 		
-		/*I do not know if this is needed*/
-		
 		
 		locations_created = false;
 		locations.removeAllElements();
@@ -96,7 +84,6 @@ public class SWIM extends MobilityModel {
 	
 	public void swimInit(Node n) {
 		
-		//finish();
 		
 		this.node_id = n.ID;
 		
@@ -115,17 +102,6 @@ public class SWIM extends MobilityModel {
 		fillNodeCellsProperties();
 		
 		
-		//this.neighborhood_cells_index = grid_map.getNeighbouringCellList(home_cell_id, neighbour_location_limit);
-		
-		//this.visiting_cells_index = grid_map.getVisitingCellList(home_cell_id, neighbour_location_limit);
-		
-		//seen_cells = new Vector<Integer>(side_num_cells * side_num_cells);
-		//weight_cells = new Vector<Double>(side_num_cells * side_num_cells);
-		//node_cells_properties = new Vector<NodeProp>((int)Math.pow(side_num_cells, 2));
-		
-		
-	
-		//updateNodesCount();
 	}
 	
 	private void createLocations() {
@@ -152,20 +128,23 @@ public class SWIM extends MobilityModel {
 		for(int i = 0; i < num_of_locs - 1; i++) {
 			random_cell_id = (int) UniformDistribution.nextUniform(0, Math.pow(side_num_cells, 2));
 			
-			p = grid_map.getCellCenterPositionByID(random_cell_id);
+			p = grid_map.randomPosInCell(random_cell_id);
+			Position keeper =  new Position();
+			p.assign(keeper);
+			grid_map.associatePositionToCell(random_cell_id, keeper);
 			
 			if(random_cell_id == home_cell_id) {
 				continue;
 			}
 			
 			if(neighborhood_cells_index.contains(random_cell_id)) {
-				l = new Loc(p.xCoord, p.yCoord, p.zCoord, 0, random_cell_id, CellType.NEIGHBOURDING);
+				l = new Loc(keeper.xCoord, keeper.yCoord, keeper.zCoord, 0, random_cell_id, CellType.NEIGHBOURDING);
 				locations.add(l);
 				continue;
 			}
 			
 			if(visiting_cells_index.contains(random_cell_id)) {
-				l = new Loc(p.xCoord, p.yCoord, p.zCoord, 0, random_cell_id, CellType.VISITING);
+				l = new Loc(keeper.xCoord, keeper.yCoord, keeper.zCoord, 0, random_cell_id, CellType.VISITING);
 				locations.add(l);
 			}
 			
@@ -205,85 +184,38 @@ public class SWIM extends MobilityModel {
 			
 		}
 		
-//		for(NodeProp p : node_neighbourding_cells_properties) {
-//			System.out.println(p.toString());
-//		}
-//		for(NodeProp p : node_visiting_cells_properties) {
-//			System.out.println(p.toString());
-//		}
 
 	}
 
-//	private Position setTargetPosition() {
-//		double randomNum = UniformDistribution.nextUniform(0, 1);
-//
-//		if (randomNum < return_home_probability && last_position != home_position) {
-//			return home_position;
-//		}else {
-//			
-//			// compute the weights assign to each node
-//            seperateAndUpdateWeights();
-//            
-//            
-//			//targe_position = decide_neibooring_or_visiting();
-//		}
-//		
-//		return null;
-//
-//	}
+
 
 	public void seperateAndUpdateWeights() {
 		
 		List<Integer> neighbor_ids = grid_map.getNeighbouringCellList(home_cell_id, neighbour_location_limit);
 		
-		// compute the maximum possible weight (to normalize)
-//	    double max_weight = 
-//	    		alpha * ( Math.sqrt( Math.pow(Configuration.dimX, 2) + Math.pow(Configuration.dimY, 2)) ) 
-//	    		+ (1.0 - alpha) * Tools.getNodeList().size();
 		double max_distance = Math.sqrt( Math.pow(Configuration.dimX, 2) + Math.pow(Configuration.dimY, 2));
 		
-//	    System.out.println("max_weight="+max_weight);
-//	    System.out.println("max_distance="+max_distance);
-//	    System.out.println("neighbor_ids="+neighbor_ids);
-//	    System.out.println("locations="+locations.toString());
-	    
 	    
 	    for(Loc l : locations) {
-	    	//System.out.println("l.cell_id="+l.cell_id);
 	    	if(neighbor_ids.contains(l.cell_id)) {
-	    		//System.out.println("contains");
+
 	    		for(NodeProp np : node_neighbourding_cells_properties) {
 	    			if(np.cell_map_id == l.cell_id) {
 	    				
 	    				np.seen = l.no_of_nodes_present;
 	    				np.weight = (alpha * (1 - (l.distanceTo(home_position)/max_distance)) + (1.0 - alpha) * (np.seen/Tools.getNodeList().size()));
 	    				
-//	    				System.out.println("l.cell_id = "+l.cell_id);
-//	    				System.out.println("alpha="+alpha);
-//	    				System.out.println("l.distanceTo(home_position)="+l.distanceTo(home_position));
-//	    				System.out.println("l.distanceTo(home_position)/max_distance="+(l.distanceTo(home_position)/max_distance));
-//	    				System.out.println("Distance part = "+(alpha * (l.distanceTo(home_position)/max_distance)));
-//	    				System.out.println("Seen part = "+((1.0 - alpha) * (np.seen/Tools.getNodeList().size())));
-//	    				System.out.println();
-	    				
-	    				//np.weight = np.weight/max_weight;
-	    				//break;
 	    			}
 	    		}
 	    	}else {
-	    		//System.out.println("non-contains");
+
 	    		for(NodeProp np : node_visiting_cells_properties) {
 	    			if(np.cell_map_id == l.cell_id) {
 	    				
 	    				np.seen = l.no_of_nodes_present;
 	    				np.weight = (alpha * (1 - (l.distanceTo(home_position)/max_distance)) + (1.0 - alpha) * (np.seen/Tools.getNodeList().size()));
 	    				
-//	    				System.out.println("l.cell_id = "+l.cell_id);
-//	    				System.out.println("Distance part = "+(alpha * (l.distanceTo(home_position)/max_distance)));
-//	    				System.out.println("Seen part = "+((1.0 - alpha) * (np.seen/Tools.getNodeList().size())));
-//	    				System.out.println();
-	    				//np.weight = np.weight/max_weight;
-	    				//break;
+
 	    			}
 	    		}
 	    	}
@@ -291,28 +223,14 @@ public class SWIM extends MobilityModel {
 	    }
 	    
 	    
-//	    for(NodeProp np : node_neighbourding_cells_properties) {
-//	    	System.out.println(np);
-//	    }
-//	    for(NodeProp np : node_visiting_cells_properties) {
-//	    	System.out.println(np);
-//	    }
 		
 	}
 
 	private Position decideHomeNeibooringVisiting() {
 
-//		System.out.println("\n\ndecideHomeNeibooringVisiting() ");
-
-		// determine the next point where this node moves to
-		// nextDestination = getNextWayPoint();
 		double randomNum = UniformDistribution.nextUniform(0, 1);
 
 		if (randomNum < return_home_probability && !this.last_target.equals(home_position)) {
-
-	//		System.out.println("Returning home");
-
-			//this.last_target.assign(current_position);
 			
 			for(NodeProp np:  node_neighbourding_cells_properties) {
 				if(np.cell_map_id == home_cell_id)
@@ -342,20 +260,13 @@ public class SWIM extends MobilityModel {
 				// next destination
 
 				Collections.sort(node_neighbourding_cells_properties);
-//				for (NodeProp np : node_neighbourding_cells_properties) {
-//					System.out.println(np);
-//				}
-//				System.out.println("Picking from node_neighbourding_cells_properties");
 				return pickDestination(node_neighbourding_cells_properties);
 			} else {
 				// if random number is higher than alpha, choose a visiting location as
 				// next destination
 
 				Collections.sort(node_visiting_cells_properties);
-//				for (NodeProp np : node_visiting_cells_properties) {
-//					System.out.println(np);
-//				}
-//				System.out.println("Picking from node_visiting_cells_properties");
+
 				return pickDestination(node_visiting_cells_properties);
 			}
 
@@ -371,13 +282,7 @@ public class SWIM extends MobilityModel {
 
 		Position target = new Position();
 
-		// count the total number of popular locations based on
-		// previously computed weight values
-//		for (NodeProp i : vec) {
-//			if (i.weight > 0.75) {
-//				popular++;
-//			}
-//		}
+
 		//top k% in weight to be the popular
 		popular = (int) Math.ceil(top_k_percent*vec.size());
 		// compute the not-popular locations
@@ -400,20 +305,13 @@ public class SWIM extends MobilityModel {
 	    // location
 		
 		int randomNum = (int) UniformDistribution.nextUniform(0, 1);
-//		System.out.println("Vec.size="+vec.size());
-//
-//		System.out.println("Popularity="+popular);
 
 		if (popular > 0 && randomNum < popularity_decision_threshold) {
 			
 			randomNum = (int) UniformDistribution.nextUniform(0, (popular - 1));
 			
-//			System.out.println("Picking randomNum popular idx between = ["+0+","+popular+"-1]");
-//			System.out.println("randomNum ="+randomNum);
-//			System.out.println("pick idx ="+(randomNum));
 			
-			target = grid_map.getCellCenterPositionByID(vec.get(randomNum).cell_map_id); 
-																		
+			target = grid_map.getPositionForCell(vec.get(randomNum).cell_map_id);
 			
 			vec.get(randomNum).increaseLocationPicks();
 
@@ -421,26 +319,13 @@ public class SWIM extends MobilityModel {
 			
 			randomNum = (int) UniformDistribution.nextUniform(0, (notPopular - 1));
 			
-//			System.out.println("Picking randomNum NOT popular idx between = ["+0+","+notPopular+"-1]");
-//			System.out.println("randomNum ="+randomNum);
-//			System.out.println("pick idx ="+(popular + randomNum));
-			target = grid_map.getCellCenterPositionByID(vec.get(popular + randomNum).cell_map_id);
+
+			target = grid_map.getPositionForCell(vec.get(popular + randomNum).cell_map_id);
 			
 			vec.get(popular + randomNum).increaseLocationPicks();
 			
 		} 
-//		else {
-//			
-//			randomNum = (int) UniformDistribution.nextUniform(0, (vec.size() - 1));
-//			
-//			System.out.println("Picking randomNum NOT popular idx between = ["+0+","+vec.size()+"-1]");
-//			System.out.println("randomNum ="+randomNum);
-//			System.out.println("pick idx ="+(randomNum));
-//			target = grid_map.randomPosInCell(vec.get(randomNum).cell_map_id);
-//			
-//			vec.get(randomNum).increaseLocationPicks();
-//			
-//		}
+
 		
 		return target;
 		
@@ -449,11 +334,7 @@ public class SWIM extends MobilityModel {
 	
 	public void updateNodeCount() {
 		
-//		System.out.println("\n\nupdateNodeCount()");
-//		System.out.println("Before updating");
-//		for (Loc l : locations) {
-//			System.out.println(l);
-//		}
+
 		
 		int c_id;
 		
@@ -468,10 +349,10 @@ public class SWIM extends MobilityModel {
 					for(Edge e : n.outgoingConnections) {
 						l.seen_nodes_ids.add(e.endNode.ID);
 					}
-					//l.no_of_nodes_present += n.outgoingConnections.size();
+
 					l.no_of_nodes_present  = l.seen_nodes_ids.size();
 					
-//					System.out.println("Updating location = "+ l);
+
 				}
 			}
 
@@ -506,18 +387,9 @@ public class SWIM extends MobilityModel {
 		// execute the waiting loop
 		if (remaining_waitingTime > 0) {
 			
-			//System.out.println("Remaning Waithing time = "+remaining_waitingTime);
 			remaining_waitingTime--;
 			this.is_moving = false;
 			
-//			CustomGlobal.pos_trace.logln(""+n.ID+
-//										", "+n.getPosition().xCoord,
-//										", "+n.getPosition().yCoord,
-//										", "+Tools.getGlobalTime());
-//			if (n instanceof ObjectNode) {
-//				CustomGlobal.contacts_trace.logln("" + n.ID + ", " + n.getPosition().xCoord + ", "
-//						+ n.getPosition().yCoord + ", " + Tools.getGlobalTime());
-//			}
 			return n.getPosition();
 		}
 
@@ -542,18 +414,6 @@ public class SWIM extends MobilityModel {
 	        // other location (neighboring or visiting), provided that
 	        // node is not already at home location
 			
-//			if (randomNum < return_home_probability && !this.last_position.equals(home_position)) {
-//				
-//				
-//				
-//				System.out.println("Returning home");
-//				
-//				this.last_position.assign(n.getPosition());
-//				
-//				target_position.assign(home_position);
-//				
-//				
-//			}else {
 				
 				this.last_target.assign(target_position);
 				
@@ -562,8 +422,7 @@ public class SWIM extends MobilityModel {
 				
 	            // find the next location (position) to move to
 	            target_position.assign(decideHomeNeibooringVisiting());
-	            
-//			}
+	           
 			
 			// determine the number of rounds needed to reach the target
 			double dist = target_position.distanceTo(n.getPosition());
