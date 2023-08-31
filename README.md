@@ -1,7 +1,7 @@
 
 # A Mobility Model of The Internet of Things 
 
-Esse repositório contém a implementação do modelo de mobilidade para Internet das Coisas (IoT). Esse modelo é projetado para reproduzir padrões de mobilidade humana em objetos IoT, considerando diferentes características de movimento.
+Esse repositório contém a implementação do modelo de mobilidade para Internet das Coisas (IoT). 
 
 ## Resumo
 
