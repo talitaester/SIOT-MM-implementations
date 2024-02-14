@@ -12,7 +12,7 @@ Este estudo apresenta um novo modelo de mobilidade projetado para a Internet das
 
 Primeiramente, é necessário ter o Sinalgo instalado. O Sinalgo é um framework de simulação para redes sem fio que permite criar e executar simulações realistas de redes. Siga estas etapas para integrar esse modelo de mobilidade com o Sinalgo:
 
-1. **Adicione o Modelo SIOT-MM como um Projeto**: Clone ou faça o download deste repositório. Adicione a sua pasta projects/, no Sinalgo.
+1. **Adicione o Modelo SIOT-MM como um Projeto**: Clone ou faça o download deste repositório. Adicione a sua pasta `projects/`, no Sinalgo.
 
 2. **Abra o Sinalgo**: Abra o Sinalgo e carregue o projeto `SIOT-MM` que você copiou para a pasta `projects/`.
 
